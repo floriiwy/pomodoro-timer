@@ -9,6 +9,7 @@ let seconds = parseInt(timeArray[1]);
 let totalSeconds = minutes * 60 + seconds;
 
 let timerId;
+
 startBtn.addEventListener("click", function() {
     if (this.innerHTML === "stop") {
         clearInterval(timerId);
@@ -19,7 +20,7 @@ startBtn.addEventListener("click", function() {
             minutes = Math.floor(totalSeconds / 60);
             seconds = totalSeconds % 60;
 
-            timer.textContent = `${minutes}:${seconds}`;
+            timer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
             if (totalSeconds === 0) {
                 clearInterval(timerId);
                 timer.textContent = "25:00";
@@ -28,18 +29,19 @@ startBtn.addEventListener("click", function() {
                 seconds = 0;
                 totalSeconds = minutes * 60 + seconds;
             }
-        }, 1000); //для ускорения вместо тысячи надо написать единицу, но мне так больше понравилось :)
+        }, 1000);
         this.innerHTML = "stop";
     }
 });
 
-let pomodoroTime = "25:00";
-let breakTime = "05:00";
+const pomodoroTime = "25:00";
+const breakTime = "05:00";
 timer.textContent = pomodoroTime;
 
 pomodoroBtn.addEventListener("click", function() {
     clearInterval(timerId);
     timer.textContent = pomodoroTime;
+    totalSeconds = 25 * 60;
     pomodoroBtn.classList.add("active");
     breakBtn.classList.remove("active");
 });
@@ -47,6 +49,7 @@ pomodoroBtn.addEventListener("click", function() {
 breakBtn.addEventListener("click", function() {
     clearInterval(timerId);
     timer.textContent = breakTime;
+    totalSeconds = 5 * 60;
     breakBtn.classList.add("active");
     pomodoroBtn.classList.remove("active");
 });
@@ -55,7 +58,9 @@ resetBtn.addEventListener("click", function() {
     clearInterval(timerId);
     if (pomodoroBtn.classList.contains("active")) {
         timer.textContent = pomodoroTime;
+        totalSeconds = 25 * 60;
     } else if (breakBtn.classList.contains("active")) {
         timer.textContent = breakTime;
+        totalSeconds = 5 * 60;
     }
 });
