@@ -2,8 +2,8 @@ const pomodoroBtn = document.querySelector("#pomodoro");
 const breakBtn = document.querySelector("#break");
 const startBtn = document.querySelector("#start");
 const resetBtn = document.querySelector("#reset");
-let timer = document.querySelector("#pomodoro-time");
-let timeArray = timer.textContent.split(":");
+const timer = document.querySelector("#pomodoro-time");
+const timeArray = timer.textContent.split(":");
 let minutes = parseInt(timeArray[0]);
 let seconds = parseInt(timeArray[1]);
 let totalSeconds = minutes * 60 + seconds;
@@ -11,26 +11,30 @@ let totalSeconds = minutes * 60 + seconds;
 let timerId;
 
 startBtn.addEventListener("click", function() {
-    if (this.innerHTML === "stop") {
+    if (this.textContent === "stop") {
         clearInterval(timerId);
-        this.innerHTML = "start";
+        this.textContent = "start";
     } else {
         timerId = setInterval(() => {
             totalSeconds--;
             minutes = Math.floor(totalSeconds / 60);
             seconds = totalSeconds % 60;
 
-            timer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            timer.textContent = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
             if (totalSeconds === 0) {
                 clearInterval(timerId);
-                timer.textContent = "25:00";
-                startBtn.innerHTML = "start";
+                if (pomodoroBtn) {
+                    timer.textContent = pomodoroTime;
+                } else {
+                    timer.textContent = breakTime;
+                }
+                startBtn.textContent = "start";
                 minutes = 25;
                 seconds = 0;
                 totalSeconds = minutes * 60 + seconds;
             }
-        }, 1000);
-        this.innerHTML = "stop";
+        }, 10);
+        this.textContent = "stop";
     }
 });
 
@@ -56,6 +60,7 @@ breakBtn.addEventListener("click", function() {
 
 resetBtn.addEventListener("click", function() {
     clearInterval(timerId);
+    startBtn.textContent = "start";
     if (pomodoroBtn.classList.contains("active")) {
         timer.textContent = pomodoroTime;
         totalSeconds = 25 * 60;
