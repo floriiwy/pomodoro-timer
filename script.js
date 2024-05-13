@@ -23,17 +23,17 @@ startBtn.addEventListener("click", function() {
             timer.textContent = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
             if (totalSeconds === 0) {
                 clearInterval(timerId);
-                if (pomodoroBtn) {
+                if (pomodoroBtn.classList.contains("active")) {
                     timer.textContent = pomodoroTime;
-                } else {
+                    totalSeconds = 25 * 60;
+                } else if (breakBtn.classList.contains("active")) {
                     timer.textContent = breakTime;
+                    totalSeconds = 5 * 60;
                 }
                 startBtn.textContent = "start";
-                minutes = 25;
-                seconds = 0;
                 totalSeconds = minutes * 60 + seconds;
             }
-        }, 10);
+        }, 1000);
         this.textContent = "stop";
     }
 });
