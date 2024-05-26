@@ -52,6 +52,7 @@ pomodoroBtn.addEventListener("click", function() {
 
 breakBtn.addEventListener("click", function() {
     clearInterval(timerId);
+    startBtn.textContent = "start";
     timer.textContent = breakTime;
     totalSeconds = 5 * 60;
     breakBtn.classList.add("active");
